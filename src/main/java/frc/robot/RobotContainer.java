@@ -17,7 +17,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.Shooter;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -34,14 +36,30 @@ public class RobotContainer {
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   private Drive tankDrive;
+  private Shooter shooter;
   private Command joystickDrive;
+  private Command shoot;
+  private Command intake;
+  private Command outtake;
+  private JoystickButton shootButton;
+  private JoystickButton intakeButton;
+  private JoystickButton outtakeButton;
   private XboxController driver;
+  private XboxController operator;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     driver = new XboxController(0);
+    operator = new XboxController(1);
+    shooter = new Shooter();
     tankDrive = new Drive();
+    intake = Commands.runEnd(() -> shooter.intake(), () -> shooter.stop(), shooter);
+    shoot= Commands.runEnd(() -> shooter.shoot(), () -> shooter.stop(), shooter);
+    outtake = Commands.runEnd(() -> shooter.outtake(), () -> shooter.stop(), shooter);
     joystickDrive = Commands.run(() -> tankDrive.tankJoystickDrive(driver), tankDrive);
+    shootButton = new JoystickButton(operator, XboxController.Button.kA.value);
+    intakeButton = new JoystickButton(operator, XboxController.Button.kRightBumper.value);
+    outtakeButton = new JoystickButton(operator, XboxController.Button.kLeftBumper.value);
   
 
     // Configure the trigger bindings
@@ -58,7 +76,10 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    tankDrive.setDefaultCommand(joystickDrive)
+    tankDrive.setDefaultCommand(joystickDrive);
+    shootButton.whileTrue(shoot);
+    intakeButton.whileTrue(intake);
+    outtakeButton.whileTrue(outtake);
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));

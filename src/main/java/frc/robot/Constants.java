@@ -26,4 +26,10 @@ public final class Constants {
     public static final int BACKLEFTMOTOR = 3;
     public static final int BACKRIGHTMOTOR = 4;
   }
+
+  public static class ShooterConstants {
+    public static final int SHOOTERID = 5;
+    public static final int INTAKEID = 7;
+    public static final int FEEDERID = 6;
+  }
 }
