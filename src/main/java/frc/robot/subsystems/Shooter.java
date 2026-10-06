@@ -69,7 +69,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void shoot() {
-    shootermotor.set(0.75);
+    shootermotor.set(0.3);
   }
 
   public void feed(){
