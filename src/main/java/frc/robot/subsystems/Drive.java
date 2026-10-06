@@ -10,10 +10,12 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import edu.wpi.first.wpilibj2.command.Commands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -82,7 +84,7 @@ public class Drive extends SubsystemBase {
   }
 
   public Command timeDrive(double time, double speed){
-    return Commands.runEnd(()-> arcadeDrive(speed, 0), ()-> arcadeDrive(0, 0)).withTimeout(time);
+    return Commands.runEnd(() -> arcadeDrive(speed, 0), () -> arcadeDrive(0, 0), this).withTimeout(time);
   }
 
 
