@@ -24,7 +24,7 @@ public class ShootWithDelay extends Command {
     public void execute() {
         shooter.shoot();
         if(timer.get() > 0.5) {
-        shooter.intake();
+            shooter.feed();
         }
     }
 
